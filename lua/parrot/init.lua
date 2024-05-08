@@ -1155,6 +1155,13 @@ M.chat_respond = function(params)
     message.content = message.content:gsub("^%s*(.-)%s*$", "%1")
   end
 
+  -- remove a message if it's role is empty
+  for i = #messages, 1, -1 do
+    if messages[i].role == "" then
+      table.remove(messages, i)
+    end
+  end
+
   -- write assistant prompt
   local last_content_line = utils.last_content_line(buf)
   vim.api.nvim_buf_set_lines(buf, last_content_line, last_content_line, false, { "", agent_prefix .. agent_suffix, "" })
